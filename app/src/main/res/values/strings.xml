@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_id">629752380526164</string>
+    <string name="app_name">Polres Omba</string>
+    <string name="label_pelapor">Data Pelapor</string>
+    <string name="label_laporan">Laporan</string>
+    <string name="label_website">Website</string>
+    <string name="web_oku">http://kreativia.id/</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="on">On</string>
+    <string name="off">Off</string>
+    <string name="title_activity_maps">Setting Lokasi</string>
+
+    <string name="api_url">kreativia.id/tutorial/panicsos</string>
+    <string name="api_error">Terjadi kesalahan pada server, silahkan coba kembali ...</string>
+</resources>

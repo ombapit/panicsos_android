@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_profile_data"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.ombapit.alarmbutton.ProfileDataActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_gravity="top"
+        android:background="@color/maroon"
+        />
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+        <RelativeLayout
+            android:id="@+id/fbLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/fb_info"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:textSize="18sp"
+                />
+
+            <TableLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/fb_info">
+
+                <TableRow>
+                    <com.facebook.login.widget.LoginButton
+                        xmlns:facebook="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/login_button"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        facebook:com_facebook_login_text="Connect"
+                        android:layout_marginRight="5dp"
+                        />
+                    <com.facebook.login.widget.LoginButton
+                        xmlns:facebook="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/login_button2"
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        facebook:com_facebook_login_text="Connect"
+                        android:visibility="gone"
+                        />
+                </TableRow>
+            </TableLayout>
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/fbLayout"
+            android:orientation = "vertical"
+            android:layout_marginTop="10dp">
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Nama"
+                        android:id="@+id/etNama"
+                        android:textSize="15dp"/>
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="KTP/SIM"
+                    android:id="@+id/etKtp"
+                    android:textSize="15dp"/>
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Alamat"
+                    android:id="@+id/etAlamat"
+                    android:gravity="top"
+                    android:inputType="textMultiLine"
+                    android:lines="5"
+                    android:textSize="15dp" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="No HP"
+                    android:id="@+id/etHP"
+                    android:textSize="15dp"/>
+            </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btSimpanProfile"
+                android:layout_below="@id/etHP"
+                android:text="Simpan"/>
+
+        </LinearLayout>
+    </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

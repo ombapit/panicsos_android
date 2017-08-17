@@ -1,0 +1,19 @@
+<resources>
+    <!--
+    TODO: Before you run your application, you need a Google Maps API key.
+
+    To get one, follow this link, follow the directions and press "Create" at the end:
+
+    https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=B5:11:A0:A5:F8:01:D0:C1:7A:8F:C9:75:F6:1B:74:B4:44:BC:A1:56%3Bcom.ombapit.alarmbutton
+
+    You can also add your credentials to an existing key, using this line:
+    B5:11:A0:A5:F8:01:D0:C1:7A:8F:C9:75:F6:1B:74:B4:44:BC:A1:56;com.ombapit.alarmbutton
+
+    Alternatively, follow the directions here:
+    https://developers.google.com/maps/documentation/android/start#get-key
+
+    Once you have your key (it starts with "AIza"), replace the "google_maps_key"
+    string in this file.
+    -->
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyDQa9-LSA3Y5h1xmXRxbyfCI0aymnMe1Js</string>
+</resources>
