@@ -211,7 +211,8 @@ public class ProfileDataActivity extends AppCompatActivity {
 
                 HashMap<String,String> data = new HashMap<>();
                 data.put("f_id", params[1]);
-                data.put("device_id", Utility.uniqDevice(ProfileDataActivity.this));
+                //data.put("device_id", Utility.uniqDevice(ProfileDataActivity.this));
+                data.put("device_id", "yuhu");
                 data.put("nama", nama);
                 data.put("ktpsim", ktpsim);
                 data.put("alamat", alamat);

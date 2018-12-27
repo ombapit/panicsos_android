@@ -4,7 +4,7 @@
     <string name="label_pelapor">Data Pelapor</string>
     <string name="label_laporan">Laporan</string>
     <string name="label_website">Website</string>
-    <string name="web_oku">http://kreativia.id/</string>
+w    <string name="web_oku">http://188.166.236.165/tutorial/panicsos</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -14,6 +14,6 @@
     <string name="off">Off</string>
     <string name="title_activity_maps">Setting Lokasi</string>
 
-    <string name="api_url">kreativia.id/tutorial/panicsos</string>
+    <string name="api_url">188.166.236.165/tutorial/panicsos</string>
     <string name="api_error">Terjadi kesalahan pada server, silahkan coba kembali ...</string>
 </resources>
