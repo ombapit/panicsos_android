@@ -1,7 +1,10 @@
 package com.ombapit.alarmbutton;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -12,12 +15,16 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.Toolbar;
@@ -78,7 +85,9 @@ public class MainActivity extends AppCompatActivity
 
         createDatabase();
 
+        boolean result=SmartLocationManager.checkPermission(MainActivity.this);
         mLocationManager = new SmartLocationManager(getApplicationContext(), this, this, SmartLocationManager.ALL_PROVIDERS, LocationRequest.PRIORITY_HIGH_ACCURACY, 10 * 1000, 1 * 1000, SmartLocationManager.LOCATION_PROVIDER_RESTRICTION_NONE); // init location manager
+
         /*mLocalTV = (TextView) findViewById(R.id.locationDisplayTV);
         mLocationProviderTV = (TextView) findViewById(R.id.locationProviderTV);
         mlocationTimeTV = (TextView) findViewById(R.id.locationTimeFetchedTV);*/
@@ -138,12 +147,12 @@ public class MainActivity extends AppCompatActivity
                             Log.d("on", btalarm.getText().toString());
                         }
                     } else {
-                        Toast.makeText(MainActivity.this,"Silahkan Lengkapi Profil user anda terlebih dahulu",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this,"Silahkan Lengkapi Profil user anda terlebih dahulu",Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(MainActivity.this, ProfileDataActivity.class);
                         startActivity(intent);
                     }
                 } else {
-                    Toast.makeText(MainActivity.this,"Silahkan Lengkapi Profil user anda terlebih dahulu",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this,"Silahkan Lengkapi Profil user anda terlebih dahulu",Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(MainActivity.this, ProfileDataActivity.class);
                     startActivity(intent);
                 }
@@ -407,5 +416,21 @@ public class MainActivity extends AppCompatActivity
         db=openOrCreateDatabase("User", Context.MODE_PRIVATE, null);
         db.execSQL("CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
                 "nama VARCHAR,ktpsim VARCHAR, alamat VARCHAR, hp VARCHAR);");
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case SmartLocationManager.PERMISSION_REQUEST_CODE:
+                Log.d("Codenya",String.valueOf(grantResults.length));
+                //Log.d("granres",String.valueOf(grantResults[0]));
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                } else {
+                    //deny
+                    Toast.makeText(MainActivity.this, "Anda harus allow device's location untuk melanjutkan aplikasi ini", Toast.LENGTH_LONG).show();
+                    this.finish();
+                }
+                break;
+        }
     }
 }

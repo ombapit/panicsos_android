@@ -15,6 +15,7 @@ import android.telephony.TelephonyManager;
 
 import com.ombapit.alarmbutton.MainActivity;
 
+import java.util.Random;
 import java.util.UUID;
 
 /**
@@ -23,6 +24,7 @@ import java.util.UUID;
 
 public class Utility {
     public static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123;
+    public static final int REQUEST_READ_PHONE_STATE = 0;
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public static boolean checkPermission(final Context context)
@@ -58,15 +60,15 @@ public class Utility {
     }
 
     public static String uniqDevice(final Context context) {
+        //TODO
         final TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-
         final String tmDevice, tmSerial, androidId;
+        String deviceId = tm.getDeviceId();
+        return deviceId;
        /* tmDevice = "" + tm.getDeviceId();
         tmSerial = "" + tm.getSimSerialNumber();
         androidId = "" + android.provider.Settings.Secure.getString(context.getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
 
         UUID deviceUuid = new UUID(androidId.hashCode(), ((long)tmDevice.hashCode() << 32) | tmSerial.hashCode());*/
-        String deviceId = tm.getDeviceId();
-        return deviceId;
     }
 }

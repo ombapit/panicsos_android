@@ -52,7 +52,7 @@ public class LaporanActivity extends AppCompatActivity {
     Uri photoURI;
 
     public static final String UPLOAD_KEY = "image";
-    public static final String TAG = "MY MESSAGE";
+    public static final String TAG = "Laporan";
 
     private Bitmap bitmap;
 
@@ -186,7 +186,7 @@ public class LaporanActivity extends AppCompatActivity {
                 photoFile.delete();
             } catch (IOException ex) {
                 // Error occurred while creating the File
-                Log.d("Photo","System Error, Hubungi Administrator");
+                Log.d("Photo",ex.toString());
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
@@ -217,7 +217,7 @@ public class LaporanActivity extends AppCompatActivity {
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "OKU_" + timeStamp + "_";
+        String imageFileName = "AB_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
@@ -261,14 +261,14 @@ public class LaporanActivity extends AppCompatActivity {
 
         Bitmap bitmap_view = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
         ivImage.setImageBitmap(bitmap_view);
-        //Log.d("Photo","Tampilkan Foto "+ mCurrentPhotoPath);
+        Log.d("Photo","Tampilkan Foto "+ mCurrentPhotoPath);
 
         //resize
         Bitmap resized;
         resized = Bitmap.createScaledBitmap(bitmap_view,(int)(real_bitmap.getWidth()*0.4), (int)(real_bitmap.getHeight()*0.4), true);
 
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        resized.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        resized.compress(Bitmap.CompressFormat.JPEG, 60, bytes);
         bitmap = resized;
     }
 
@@ -293,7 +293,7 @@ public class LaporanActivity extends AppCompatActivity {
         ivImage.setImageBitmap(bm);
 
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        bm.compress(Bitmap.CompressFormat.JPEG, 60, bytes);
         bitmap = bm;
         sudahUpload = true;
     }

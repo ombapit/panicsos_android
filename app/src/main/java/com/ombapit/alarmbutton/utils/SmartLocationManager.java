@@ -1,6 +1,7 @@
 package com.ombapit.alarmbutton.utils;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -23,6 +24,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.ombapit.alarmbutton.MainActivity;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -37,8 +39,8 @@ public class SmartLocationManager implements
     private static final String TAG = SmartLocationManager.class.getSimpleName();
 
     private static final int TWO_MINUTES = 1000 * 60 * 2;
-    private static final int PERMISSION_REQUEST_CODE = 1000;
-    private static final int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
+    public static final int PERMISSION_REQUEST_CODE = 123;
+    public static final int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
 
     // default value is false but user can change it
     private String mLastLocationUpdateTime;                                                         // fetched location time
@@ -94,6 +96,38 @@ public class SmartLocationManager implements
         initSmartLocationManager();
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    public static boolean checkPermission(final Context context)
+    {
+        int currentAPIVersion = Build.VERSION.SDK_INT;
+        if(currentAPIVersion>=android.os.Build.VERSION_CODES.M)
+        {
+            if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, Manifest.permission.ACCESS_FINE_LOCATION)) {
+                    AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
+                    alertBuilder.setCancelable(true);
+                    alertBuilder.setTitle("Permission Necessary");
+                    alertBuilder.setMessage("Device's Location permission is Necessary");
+                    alertBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+                        public void onClick(DialogInterface dialog, int which) {
+                            ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_CODE);
+                        }
+                    });
+                    AlertDialog alert = alertBuilder.create();
+                    alert.show();
+
+                } else {
+                    ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_CODE);
+                }
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            return true;
+        }
+    }
 
     public void initSmartLocationManager() {
 
@@ -101,7 +135,6 @@ public class SmartLocationManager implements
         // 2) check if gps is available
         // 3) get location using awesome strategy
 
-        askLocationPermission();                            // for android version 6 above
         checkNetworkProviderEnable(mForceNetworkProviders);                       //
 
         if (isGooglePlayServicesAvailable())                // if googleplay services available
@@ -130,6 +163,12 @@ public class SmartLocationManager implements
 
     @Override
     public void onConnected(Bundle connectionHint) {
+        if (Build.VERSION.SDK_INT >= 23 &&
+                ContextCompat.checkSelfPermission(mContext, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(mContext, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+
         Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         startLocationUpdates();
         if (location == null) {
@@ -256,6 +295,12 @@ public class SmartLocationManager implements
     }
 
     protected void startLocationUpdates() {
+        if (Build.VERSION.SDK_INT >= 23 &&
+                ContextCompat.checkSelfPermission(mContext, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(mContext, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
     }
 
@@ -299,43 +344,6 @@ public class SmartLocationManager implements
         mLastLocationFetched = null;
         networkLocation = null;
         gpsLocation = null;
-    }
-
-    //  Android M Permission check
-    public void askLocationPermission() {
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-
-            if (ContextCompat.checkSelfPermission(mActivity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                    || ContextCompat.checkSelfPermission(mActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                    ) {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(mActivity, Manifest.permission.ACCESS_COARSE_LOCATION)
-                        || ActivityCompat.shouldShowRequestPermissionRationale(mActivity, Manifest.permission.ACCESS_FINE_LOCATION)) {
-
-                    final AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
-                    builder.setMessage("Please allow all permissions in App Settings for additional functionality.")
-                            .setCancelable(false)
-                            .setPositiveButton("Allow", new DialogInterface.OnClickListener() {
-                                public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
-                                    Toast.makeText(mContext, "Welcome", Toast.LENGTH_SHORT).show();
-                                }
-                            })
-                            .setNegativeButton("Deny", new DialogInterface.OnClickListener() {
-                                public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
-                                    mActivity.finish();
-                                }
-                            });
-                    final AlertDialog alert = builder.create();
-                    alert.show();
-
-                } else
-                    ActivityCompat.requestPermissions(mActivity, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION
-                            , Manifest.permission.ACCESS_FINE_LOCATION
-                    }, PERMISSION_REQUEST_CODE);
-
-            }
-        }
     }
 
     public void checkNetworkProviderEnable(int enforceActive) {

@@ -1,11 +1,16 @@
 package com.ombapit.alarmbutton;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
@@ -34,6 +39,7 @@ import org.json.JSONObject;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Random;
 
 public class ProfileDataActivity extends AppCompatActivity {
 
@@ -48,12 +54,21 @@ public class ProfileDataActivity extends AppCompatActivity {
     private Cursor c;
 
     String nama,ktpsim,alamat,hp;
+    public static final int REQUEST_READ_PHONE_STATE = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
+        Log.d("FbHash", "key:" + FacebookSdk.getApplicationSignature(this));
         callbackManager = CallbackManager.Factory.create();
+
+        int permissionCheck = ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_PHONE_STATE);
+        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions((Activity) this, new String[]{Manifest.permission.READ_PHONE_STATE}, REQUEST_READ_PHONE_STATE);
+        } else {
+            //
+        }
 
         setContentView(R.layout.activity_profile_data);
         db=openOrCreateDatabase("User", Context.MODE_PRIVATE, null);
@@ -211,8 +226,8 @@ public class ProfileDataActivity extends AppCompatActivity {
 
                 HashMap<String,String> data = new HashMap<>();
                 data.put("f_id", params[1]);
-                //data.put("device_id", Utility.uniqDevice(ProfileDataActivity.this));
-                data.put("device_id", "yuhu");
+                data.put("device_id", Utility.uniqDevice(ProfileDataActivity.this));
+                //data.put("device_id", "yuhu");
                 data.put("nama", nama);
                 data.put("ktpsim", ktpsim);
                 data.put("alamat", alamat);
@@ -227,5 +242,20 @@ public class ProfileDataActivity extends AppCompatActivity {
 
         SaveProfile ui = new SaveProfile();
         ui.execute(aksi,f_id);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_READ_PHONE_STATE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                } else {
+                    //deny
+                    Toast.makeText(ProfileDataActivity.this, "Anda harus allow 'make and manage phone calls permission untuk melanjutkan aplikasi ini", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(ProfileDataActivity.this, MainActivity.class);
+                    startActivity(intent);
+                }
+                break;
+        }
     }
 }
